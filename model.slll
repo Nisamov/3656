@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# file to read
+file_route="/rute/to/file_route.txt"
+
+# Verify
+if [ ! -f "$file_route" ]; then
+    echo "Does not exist"
+    exit 1
+fi
+
+# read line per line
+while IFS= read -r line; do
+    # Verify
+    if [[ $line == *"input=yes"* ]]; then
+        # input=yes
+        echo "YES"
+    fi
+    
+    # Verify
+    if [[ $line == *"input=no"* ]]; then
+        # input=no
+        echo "NO"
+    fi
+done < "$file_route"
