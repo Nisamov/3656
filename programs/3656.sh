@@ -16,6 +16,19 @@ while IFS= read -r linea; do
     if [[ $linea == *"config_enabled=true"* ]]; then
         # If file config is enabled
         echo "File is ready to read"
+
+        # Check for line "full_purge=false"
+        if [[ $linea == *"full_purge=false"* ]]; then
+            # Default - unabled
+            echo "Program will not erase os"
+        fi
+        # Check for line "full_purge=true"
+        if [[ $linea == *"full_purge=true"* ]]; then
+            # Enabled
+            echo "Program will erase os"
+        fi
+
+
     fi
     
     # Verificar si la línea contiene "input=no"
@@ -23,4 +36,5 @@ while IFS= read -r linea; do
         # File is not enabled
         echo "File is not ready to read"
     fi
-done < "$ruta_del_archivo"
+
+done < "$CONFIG_ROUTE"
