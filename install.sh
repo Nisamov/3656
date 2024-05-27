@@ -1,51 +1,32 @@
 #!/bin/bash
-# Installation Program 3656
 
-# Variable declaration
-# Absolute route
-INSTALL_DIR="/usr/local/sbin/3656"
-CONFIG_ROUTE="/usr/local/sbin/3656/configured"
-CONFIG_FILE="config.conf"
-DEPENDENCES="/usr/local/sbin/3656/dependences"
-PROGRAMS="/usr/local/sbin/3656/programs"
+# Software de completa instalacion para equipos ubuntu moldeado a gustos de Andrés Ruslan Abadías Otal
+# Su uso es libre, no me hago responsable de lo que pueda ocurrir a sus equipos por llevar a cabo pruebas con las configuraciones
 
-# Messages
-CREATED="is already created."
-NOT_CREATED="is not created."
-CREATING="creating..."
-DIR_INSTALLATION_FAILED="Failed to create installation directory"
-FILE_INSTALLATION_FAILED="Failed to create installation file"
+# Instalacion: ufw_firewall, git, autonetplan, shellcheck...
 
-# Ask if wanted to install
-read -p "Do you want to install 3656 program? (y/n): " response
-if [[ $response != "y" ]]; then
-    # Stop program
-    echo "Installation aborted."
-    exit 0
+# Actualizacion de sistema
+sudo apt update
+sudo apt upgrade
+
+# Comenzar instalacion de servicios
+
+# UFW Firewall
+if [[ -f "./pkg/services/ufw_firewall.sh" ]]; then
+    sudo bash "/pkg/services/ufw_firewall.sh"
 fi
 
-# Check if INSTALL_DIR exists
-if [[ ! -d "$INSTALL_DIR" ]]; then
-    echo "Installation directory $INSTALL_DIR $NOT_CREATED, $CREATING"
-    sudo mkdir -p "$INSTALL_DIR" || { echo -e "[\e[32m#\e[0m] $DIR_INSTALLATION_FAILED"; exit 1; }
-else
-    echo "Installation directory $INSTALL_DIR $CREATED"
+# GIT
+if [[ -f "./pkg/services/git.sh" ]]; then
+    sudo bash "/pkg/services/git.sh"
 fi
 
-# Check if CONFIG_ROUTE exists
-if [[ ! -d "$CONFIG_ROUTE" ]]; then
-    echo "Configuration directory $CONFIG_ROUTE $NOT_CREATED, $CREATING"
-    sudo mkdir -p "$CONFIG_ROUTE" || { echo -e "[\e[32m#\e[0m] $DIR_INSTALLATION_FAILED"; exit 1; }
-else
-    echo "Configuration directory $CONFIG_ROUTE $CREATED"
+# AutoNetplan
+if [[ -f "./pkg/resources/autonetplan.sh" ]]; then
+    sudo bash "/pkg/resources/autonetplan.sh"
 fi
 
-# Check if config file exists
-if [[ ! -f "$CONFIG_ROUTE/$CONFIG_FILE" ]]; then
-    echo "Configuration file $CONFIG_ROUTE/$CONFIG_FILE $NOT_CREATED, $CREATING"
-    sudo cp config.conf "$CONFIG_ROUTE" || { echo -e "[\e[32m#\e[0m] $FILE_INSTALLATION_FAILED"; exit 1; }
-else
-    echo "Configuration file $CONFIG_ROUTE/$CONFIG_FILE $CREATED"
+# Shellcheck
+if [[ -f "./pkg/services/shellcheck" ]]; then
+    sudo bash "/pkg/services/shellcheck"
 fi
-
-echo "Installation completed successfully."
