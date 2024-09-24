@@ -97,7 +97,7 @@ alias update='sudo apt update'
 # Upgrade
 alias upgrade='sudo apt upgrade'
 # Both
-alias grow='sudo apt update | sudo apt upgrade'
+alias grow='sudo apt update | sudo apt upgrade -y'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

@@ -12,21 +12,29 @@ sudo apt upgrade
 # Comenzar instalacion de servicios
 
 # UFW Firewall
-if [[ -f "./pkg/services/ufw_firewall.sh" ]]; then
-    sudo bash "/pkg/services/ufw_firewall.sh"
-fi
+sudo bash "/pkg/services/ufw_firewall.sh"
 
 # GIT
-if [[ -f "./pkg/services/git.sh" ]]; then
-    sudo bash "/pkg/services/git.sh"
-fi
+sudo bash "/pkg/services/git.sh"
 
 # AutoNetplan
-if [[ -f "./pkg/resources/autonetplan.sh" ]]; then
+read -p "Install autonetplan [y/n]: " installautonetplan
+if [[ installautonetplan == "y" && installautonetplan == "s" ]]; then
     sudo bash "/pkg/resources/autonetplan.sh"
 fi
 
-# Shellcheck
-if [[ -f "./pkg/services/shellcheck" ]]; then
-    sudo bash "/pkg/services/shellcheck"
+read -p "Install Secure Service Protocol [y/n]: " installssp
+if [[ installssp == "y" && installssp == "s" ]]; then
+    sudo bash "/pkg/resources/ssp.sh"
 fi
+
+# Shellcheck
+sudo bash "/pkg/services/shellcheck.sh"
+
+#GO
+sudo bash "/pkg/services/go.sh"
+
+# Sustitucion de .bashrc
+sudo rm -f "/home/$USER/.bashrc" # Eliminacion de bashrc original
+sudo cp "/pkg/config/.bashrc" "/home/$USER/" # Posicionamiento en /home/usuario/
+source .bashrc # Recarga de bashrc
